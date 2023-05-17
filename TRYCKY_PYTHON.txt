@@ -1,0 +1,186 @@
+#+++++++++++++++FUNCIONES PYTHON++++++++++++++++++
+
+board1 = [[1,2,3],[4,"x",6],[7,8,9]]
+
+#+++++++++++++++PRIMERA FUNCION++++++++++++++++++
+
+
+def DisplayBoard(board):
+    # La función acepta un parámetro el cual contiene el estado actual del tablero
+    # y lo muestra en la consola.
+    
+    for i in range(0,3,1):
+        
+        print(board[i][0] , board[i][1] , board[i][2])
+
+
+#+++++++++++++++SEGUNDA FUNCION++++++++++++++++++
+    
+def EnterMove(board):
+    
+    casillas =[0,1,2,0,1,2,0,1,2]    
+    x = True
+    
+    while x == True:
+        
+        print("ingrese jugada, elija una casilla del 1 al 9:")
+        
+        jugada= int(input())
+        
+        casilla = casillas[jugada-1]
+        
+        if jugada>=1 and jugada<=3:
+            if board[0][casilla]== "x":
+                break
+            else:
+                board[0][casilla]="O"
+                x = False
+        elif jugada>=4 and jugada<=6:
+            if board[1][casilla]== "x":
+                break
+            else:
+                board[1][casilla]="O"
+                x = False
+        elif jugada>=7 and jugada<=9:
+            if board[2][casilla]== "x":
+                break
+            else:
+                board[2][casilla]="O"
+                x = False
+
+    return board
+    
+    
+
+
+
+
+#+++++++++++++++TERCERA FUNCION++++++++++++++++++
+
+
+def MakeListOfFreeFields(board):
+    duo =()
+    my_list=[]
+    for i in range(3):
+        for j in range(3):
+            if board[i][j]=="x" or board[i][j] == "O":
+                continue
+            else:
+                duo =(i,j)
+                my_list.append(duo)
+                
+    return my_list
+            
+    # La función examina el tablero y construye una lista de todos los cuadros vacíos.
+    # La lista esta compuesta por tuplas, cada tupla es un par de números que indican
+    #la fila y columna.
+
+
+
+
+#+++++++++++++++CUARTA FUNCION++++++++++++++++++
+
+
+
+def VictoryFor(board):
+    
+    acum = " "
+    victoria = " "
+    
+    for i in range(3):
+        acum = board[i][0]+board[i][1]+board[i][2]
+        if acum == "xxx":
+            victoria = "la victoria es para las maquinas"
+            x = False
+            print(victoria)
+		    break
+        elif acum == "OOO":
+            victoria = "la victoria es para los humanos"
+    		print(victoria)
+    		x = False
+    		break
+        else:
+            acum =" "
+            continue
+    return x          
+    # La función analiza el estatus del tablero para verificar si
+    # el jugador que utiliza las 'O's o las 'X's ha ganado el juego.
+    
+    
+    
+VictoryFor(board1)
+
+
+
+
+#+++++++++++++++QUINTA FUNCION++++++++++++++++++
+
+from random import randrange
+def DrawMove(board):
+    casillas =[0,1,2,0,1,2,0,1,2]    
+    x = True
+    rand=0
+    
+    while x == True:
+        ran = randrange(8)
+        casilla = casillas[ran]
+        
+        if ran>=0 and ran<=2:
+            if board[0][casilla]== "x" or  board[0][casilla]=="O":
+                break
+            else:
+                board[0][casilla]="x"
+                x = False
+        elif ran>=3 and ran<=5:
+            if board[1][casilla]== "x" or  board[1][casilla]=="O":
+                break
+            else:
+                board[1][casilla]="x"
+                x = False
+        elif ran>=6 and ran<=8:
+            if board[2][casilla]== "x" or board[2][casilla]=="O":
+                break
+            else:
+                board[2][casilla]="x"
+                x = False
+        
+        
+    return board    
+    # La función dibuja el movimiento de la máquina y actualiza el tablero.
+
+
+
+
+    
+
+
+
+#++++++++++++++++FUNCION JUGAR++++++++++++++++++++++++
+def jugar(board):
+    tablero = board
+    x = True
+    #se despliega el tablero
+    print(Display(tablero))
+    while x== True:
+       
+        # se efectua el movimimiento del HMN
+        tablero = EnterMove(tablero)
+        # se despliega el tablero
+        print(Display(tablero))
+        #se analiza el tablero
+        victoriaHmn = VictoryFor(tablero)
+        if victoriaHmn == False:
+            x = False
+            break
+        else:
+            tablero = DrawMove(tablero)
+            # se despliega el tablero
+            print(Display(tablero))
+            victoriaMqn = VictoryFor(tablero)
+            if victoriaMqn == False:
+                x = False
+                break
+            else:
+                continue
+        print("estos son los espacion libres que quean en el tablero")
+        MakeListOfFreeFields(tablero)
